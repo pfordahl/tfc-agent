@@ -1,8 +1,7 @@
 provider "aws" {
-  region = "us-west-2"
+  region = "us-east-1"
   assume_role {
     role_arn     = var.dev_role_arn
-    session_name = "terraform"
   }
 }
 

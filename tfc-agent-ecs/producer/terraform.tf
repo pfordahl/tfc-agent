@@ -5,4 +5,11 @@ terraform {
       version = "~> 3.0"
     }
   }
+  backend "remote" {
+    organization = "sleepnumberlabs"
+
+    workspaces {
+      name = "terraform-agent-infra"
+    }
+  }
 }

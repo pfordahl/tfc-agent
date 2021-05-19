@@ -1,4 +1,4 @@
-desired_count = 2
-max_count     = 4
-prefix        = "harry"
-region        = "us-west-2"
+desired_count = 1
+max_count     = 1
+prefix        = "terraform-agent"
+region        = "us-east-1"

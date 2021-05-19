@@ -1,5 +1,6 @@
 provider "aws" {
   region = var.region
+  profile = "bamlabs-ops-admin"
 }
 
 resource "aws_ecs_cluster" "tfc_agent" {
@@ -120,6 +121,10 @@ data "aws_iam_policy_document" "agent_assume_role_policy_definition" {
       identifiers = ["ecs-tasks.amazonaws.com"]
       type        = "Service"
     }
+    principals {
+      identifiers = ["arn:aws:iam::037853274712:role/terraform-agent-role","arn:aws:iam::899505874653:role/terraform-agent-role","arn:aws:iam::974346324898:role/terraform-agent-role"]
+      type        = "AWS"
+    }
   }
 }
 
@@ -170,6 +175,10 @@ data "aws_iam_policy_document" "dev_assume_role_policy_definition" {
 resource "aws_iam_role_policy_attachment" "dev_ec2_role_attach" {
   role       = aws_iam_role.terraform_dev_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+}
+resource "aws_iam_role_policy_attachment" "admin_role_attach" {
+  role       = aws_iam_role.agent.name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
 # networking
@@ -246,7 +255,7 @@ resource "aws_ssm_parameter" "notification_token" {
 }
 
 resource "aws_s3_bucket" "webhook" {
-  bucket = var.prefix
+  bucket = "siq-dev-terraform-agent"
   acl    = "private"
 
   tags = local.common_tags
